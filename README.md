@@ -9,7 +9,6 @@ Below is an example of the library in action. Note, the example below demonstrat
 ### Python
 ```python
 from pdoo import Document, style
-from contextlib import contextmanager
 
 # Create the HTML document object
 doc = Document()
@@ -17,30 +16,13 @@ doc = Document()
 # Create a dynamic CSS class that is parameterized by
 # border_radius and background_color arguments.
 @style
-def label_style(*, background_color, border_radius = 0):
+def style_fn(*, background_color, border_radius = 0):
     return lambda clsname: f"""
         .{clsname} {{
             background-color: {background_color};
             border-radius: {border_radius}px;
         }}
     """
-
-# Create a modular "label" component. That will set a background
-# and smooth border of its child nodes.
-@contextmanager
-def label_component(doc, *, is_error):
-    # Generate a unique CSS class name that styles an element
-    # as red with square borders (if is_error is true) or green with
-    # round borders
-    cls_name = doc.style(label_style(
-        background_color = "red" if is_error else "green",
-        border_radius = 0 if is_error else 4
-    ))
-
-    # The component consists of a parent <div>, styled using the class name
-    # generated above, and then its children.
-    with doc.tag("div", {"class": cls_name}):
-        yield
 
 # Begin defining the contents of the <head> tag.
 with doc.head:
@@ -56,30 +38,26 @@ with doc.head:
         # of any HTML characters (i.e. "<" or ">").
         doc.raw("console.log(\"<hello world>\");")
 
-    # Create a <meta> tag with a "name" attribute
-    with doc.tag("meta", {"name": "viewport"}):
-        # Once a tag is bound, we can include additional attributes by
-        # using the "attr" method.
-        doc.attr("content", "width=device-width,initial-scale=1.0")
-
 # Now lets work on the <body>.
 with doc.body:
     # As a shortcut, text can be provided directly as an argument
     # after the tag attributes...
     doc.tag("h1", {}, "Here are some custom labels")
 
-    # Create an error label.
-    with label_component(doc, is_error = True):
-        doc.text("This is an error label")
+    # Create a green label with square borders
+    div_cls = doc.style(style_fn(background_color = "green"))
+    with doc.tag("div", {"class": div_cls}):
+        doc.text("This is green with square borders")
 
-    # Create an error label.
-    with label_component(doc, is_error = True):
-        doc.text("This is another error label")
+    # Create a blue label with round borders
+    div_cls = doc.style(style_fn(background_color = "blue", border_radius = 4))
+    with doc.tag("div", {"class": div_cls}):
+        doc.text("This is blue with round borders")
 
-    # Create a success label, which wraps an anchor tag.
-    with label_component(doc, is_error = False):
-        with doc.tag("a", {"href": "#" }):
-            doc.text("This is a success label")
+    # Create a blue label with round borders
+    div_cls = doc.style(style_fn(background_color = "blue", border_radius = 4))
+    with doc.tag("div", {"class": div_cls}):
+        doc.text("This is blue with round borders")
 
 # Spit out the HTML!
 print(str(doc))
@@ -92,12 +70,12 @@ print(str(doc))
 <html>
     <head>
         <style>
-            .cls-__main__-label_style-0 {
-                background-color: red;
+            .cls-__main__-style_fn-0 {
+                background-color: green;
                 border-radius: 0px;
             }
-            .cls-__main__-label_style-1 {
-                background-color: green;
+            .cls-__main__-style_fn-1 {
+                background-color: blue;
                 border-radius: 4px;
             }
         </style>
@@ -107,23 +85,19 @@ print(str(doc))
         <script>
             console.log("<hello world>");
         </script>
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        </meta>
     </head>
     <body>
         <h1>
             Here are some custom labels
         </h1>
-        <div class="cls-__main__-label_style-0">
-            This is an error label
+        <div class="cls-__main__-style_fn-0">
+            This is green with square borders
         </div>
-        <div class="cls-__main__-label_style-0">
-            This is another error label
+        <div class="cls-__main__-style_fn-1">
+            This is blue with round borders
         </div>
-        <div class="cls-__main__-label_style-1">
-            <a href="#">
-                This is a success label
-            </a>
+        <div class="cls-__main__-style_fn-1">
+            This is blue with round borders
         </div>
     </body>
 </html>
