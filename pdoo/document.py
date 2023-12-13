@@ -18,7 +18,6 @@ class Document(DOMNode):
         with self.head:
             self.auto_style = self.tag("style")
 
-
     def get_parent(self):
         return self.parent_stack[-1] if len(self.parent_stack) > 0 else self
 
@@ -26,17 +25,17 @@ class Document(DOMNode):
         parent = self.get_parent()
         tag_node = DOMNode(parent, tag, attrs)
         if text is not None:
-            tag_node.children.append(TextNode(text))
-        parent.children.append(tag_node)
+            tag_node.append(TextNode(text))
+        parent.append(tag_node)
         return tag_node
 
     def text(self, text):
         parent = self.get_parent()
-        parent.children.append(TextNode(text))
+        parent.append(TextNode(text))
 
     def raw(self, raw):
         parent = self.get_parent()
-        parent.children.append(RawNode(raw))
+        parent.append(RawNode(raw))
 
     def attr(self, attr_name, attr_value):
         parent = self.get_parent()
