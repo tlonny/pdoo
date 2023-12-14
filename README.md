@@ -111,6 +111,14 @@ You can install pdoo using `pip` via:
 pip install pdoo
 ```
 
+## Testing
+
+You can test pdoo via:
+
+```bash
+python -m unittest discover -s test
+```
+
 # Usage
 
 All code snippets below assume that both `Document` and `style` have been imported from `pdoo`:

@@ -1,3 +1,5 @@
+from html import escape
+
 void_elements = set([
     "area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"
 ])
@@ -26,7 +28,7 @@ class DOMNode:
         return self.parent.document
 
     def render(self):
-        fmtted_attrs = " ".join(f"{k}=\"{v}\"" for k, v in self.attributes.items())
+        fmtted_attrs = " ".join(f"{k}=\"{escape(v)}\"" for k, v in self.attributes.items())
         yield (0, f"<{self.tag_name} {fmtted_attrs}>" if len(fmtted_attrs) > 0 else f"<{self.tag_name}>")
         if self.is_void:
             return
