@@ -1,8 +1,8 @@
 # PDOO
 
-PDOO, short for "**P**ython **DO**M **O**rchestrator," is a lightweight, dependency-free library designed for effortlessly crafting styled HTML documents solely with Python. Drawing inspiration from robust alternatives like [dominate](https://github.com/Knio/dominate)`, PDOO emphasizes simplicity and ease of use.
+PDOO, short for "**P**ython **DO**M **O**rchestrator," is a lightweight, dependency-free library designed for effortlessly crafting styled HTML documents solely with Python. Drawing inspiration from robust alternatives like [dominate](https://github.com/Knio/dominate), PDOO emphasizes simplicity and ease of use.
 
-With PDOO, you sidestep the need for clunky templating languages like Jinja or Mustache. Styling becomes a breeze using Python alone — no separate CSS files to juggle, just straightforward dynamic styling with f-strings."
+With PDOO, you sidestep the need for clunky templating languages like Jinja or Mustache. Styling becomes a breeze using Python alone — no separate CSS files to juggle, just straightforward dynamic styling with f-strings.
 
 Below is an example of the library in action. Note, the example below demonstrates **all** the concepts provided by PDOO. Scroll down below for a _gentler_ introduction to the library...
 
