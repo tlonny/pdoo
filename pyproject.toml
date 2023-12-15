@@ -1,17 +1,13 @@
 [tool.poetry]
 name = "pdoo"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = ["tlonny"]
 license = "MIT"
 readme = "README.md"
 
-[tool.poetry.scripts]
-test = "python -m unittest discover -s test"
-
 [tool.poetry.dependencies]
 python = "^3.11"
-
 
 [build-system]
 requires = ["poetry-core"]
