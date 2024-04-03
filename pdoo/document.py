@@ -41,18 +41,22 @@ class Document(DOMNode):
         parent = self.get_parent()
         parent.attributes[attr_name] = attr_value
 
-    def style(self, style_template):
-        cache_key, style_lambda = style_template
-        if cache_key not in self.style_class_names:
-            # Include the function name in the class name to improve HTML debugging.
-            # FQNs might have dots, which are not allowed in class names.
-            class_name = f"cls-{cache_key[0]}-{cache_key[1]}-{self.unique_id_gen}".replace(".", "-")
-            self.unique_id_gen += 1
-            self.style_class_names[cache_key] = class_name
-            with self.auto_style:
-                rendered_template = style_lambda(class_name)
-                self.raw(dedent(rendered_template).strip())
-        return self.style_class_names[cache_key]
+    def style(self, *style_templates):
+        cls_names = []
+        for style_template in style_templates:
+            cache_key, style_lambda = style_template
+            if cache_key not in self.style_class_names:
+                # Include the function name in the class name to improve HTML debugging.
+                # FQNs might have dots, which are not allowed in class names.
+                class_name = f"cls-{cache_key[0]}-{cache_key[1]}-{self.unique_id_gen}".replace(".", "-")
+                self.unique_id_gen += 1
+                self.style_class_names[cache_key] = class_name
+                with self.auto_style:
+                    rendered_template = style_lambda(class_name)
+                    self.raw(dedent(rendered_template).strip())
+            cls_name = self.style_class_names[cache_key]
+            cls_names.append(cls_name)
+        return " ".join(cls_names)
 
     @property
     def document(self):
