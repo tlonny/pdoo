@@ -21,7 +21,8 @@ class Document(DOMNode):
     def get_parent(self):
         return self.parent_stack[-1] if len(self.parent_stack) > 0 else self
 
-    def tag(self, tag, attrs = dict(), text = None):
+    def tag(self, tag, attrs = None, text = None):
+        attrs = dict() if attrs is None else attrs
         parent = self.get_parent()
         tag_node = DOMNode(parent, tag, attrs)
         if text is not None:
